@@ -94,7 +94,7 @@ cp .env.example .env
 ```env
 # Telegram Yapılandırması
 TELEGRAM_BOT_TOKEN=your_bot_token_here        # Telegram bot token'ınız
-TELEGRAM_CHAT_ID=your_chat_id_here           # Telegram kanal ID'niz (örn: -100123456789)
+TELEGRAM_CHAT_ID=your_chat_id_here            # Telegram kanal ID'niz (örn: -100123456789)
 TELEGRAM_RATE_LIMIT=20                        # Telegram API için dakikada maksimum mesaj sayısı
 TELEGRAM_RETRY_AFTER=5000                     # Rate limit aşımında beklenecek süre (milisaniye)
 TELEGRAM_RATE_LIMIT_MINUTES=15                # Bildirimler arası minimum süre (dakika)
