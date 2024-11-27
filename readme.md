@@ -16,7 +16,7 @@ Bu bot, Schengen vizesi için randevu durumlarını otomatik olarak takip eder v
 
 ### Yazılım Gereksinimleri
 - Node.js (v16 veya üzeri)
-- npm veya yarn
+- Paket yöneticisi (npm, yarn veya pnpm)
 - Telegram Bot Token'ı
 - Telegram Kanal/Grup ID'si
 
@@ -48,7 +48,7 @@ Bot'un sürekli çalışabilmesi için aşağıdaki seçeneklerden birine ihtiya
 ### Gereksinimler
 
 - Node.js (v16 veya üzeri)
-- npm veya yarn
+- Paket yöneticisi (npm, yarn veya pnpm)
 - Telegram Bot Token'ı
 - Telegram Kanal/Grup ID'si
 
@@ -80,9 +80,14 @@ cd visa-checker
 
 2. Gerekli paketleri yükleyin:
 ```bash
+# npm kullanıyorsanız
 npm install
-# veya
+
+# yarn kullanıyorsanız
 yarn install
+
+# pnpm kullanıyorsanız
+pnpm install
 ```
 
 3. `.env.example` dosyasını `.env` olarak kopyalayın:
@@ -122,25 +127,40 @@ DEBUG=false                                  # Hata ayıklama modu (true/false)
 
 5. TypeScript kodunu derleyin:
 ```bash
+# npm kullanıyorsanız
 npm run build
-# veya
+
+# yarn kullanıyorsanız
 yarn build
+
+# pnpm kullanıyorsanız
+pnpm build
 ```
 
 ### 4. Botu Çalıştırma
 
 1. Geliştirme modunda çalıştırma:
 ```bash
+# npm kullanıyorsanız
 npm run dev
-# veya
+
+# yarn kullanıyorsanız
 yarn dev
+
+# pnpm kullanıyorsanız
+pnpm dev
 ```
 
 2. Production modunda çalıştırma:
 ```bash
+# npm kullanıyorsanız
 npm start
-# veya
+
+# yarn kullanıyorsanız
 yarn start
+
+# pnpm kullanıyorsanız
+pnpm start
 ```
 
 ## ⚙️ Yapılandırma Seçenekleri
