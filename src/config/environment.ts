@@ -2,55 +2,72 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+/**
+ * Çevre değişkenleri için tip tanımlamaları
+ */
 export interface EnvironmentConfig {
+  // Telegram ile ilgili yapılandırmalar
   telegram: {
-    botToken: string;
-    channelId: string;
-    rateLimit: number;
-    retryAfter: number;
+    botToken: string;      // Telegram bot token'ı
+    channelId: string;     // Telegram kanal ID'si
+    rateLimit: number;     // Dakikada gönderilebilecek maksimum mesaj sayısı
+    retryAfter: number;    // Rate limit aşıldığında beklenecek süre (ms)
   };
+  // Uygulama genel yapılandırmaları
   app: {
-    checkInterval: string;
-    targetCountry: string;
-    targetCities: string[];
-    missionCountry: string;
-    debug: boolean;
+    checkInterval: string;    // Kontrol sıklığı (cron formatında)
+    targetCountry: string;    // Kaynak ülke (Turkiye)
+    targetCities: string[];   // Takip edilecek şehirler listesi
+    missionCountry: string;   // Hedef ülke (Netherlands, France vb.)
+    debug: boolean;           // Hata ayıklama modu
   };
+  // API ile ilgili yapılandırmalar
   api: {
-    visaApiUrl: string;
-    maxRetries: number;
-    retryDelayBase: number;
+    visaApiUrl: string;      // Vize API'sinin adresi
+    maxRetries: number;      // Maksimum deneme sayısı
+    retryDelayBase: number;  // Denemeler arası bekleme süresi (ms)
   };
+  // Önbellek yapılandırmaları
   cache: {
-    maxSize: number;
-    cleanupInterval: number;
+    maxSize: number;         // Maksimum önbellek boyutu
+    cleanupInterval: number; // Temizleme sıklığı (ms)
   };
 }
 
+/**
+ * Çevre değişkenlerini doğrular ve yapılandırma nesnesini oluşturur
+ * @returns Doğrulanmış yapılandırma nesnesi
+ * @throws Eksik veya hatalı yapılandırma durumunda hata fırlatır
+ */
 function validateEnvironment(): EnvironmentConfig {
+  // Zorunlu çevre değişkenlerini kontrol et
   const requiredEnvVars = {
     TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN,
     TELEGRAM_CHAT_ID: process.env.TELEGRAM_CHAT_ID,
   };
 
+  // Eksik değişkenleri bul
   const missingVars = Object.entries(requiredEnvVars)
     .filter(([_, value]) => !value)
     .map(([key]) => key);
 
+  // Eksik değişken varsa hata fırlat
   if (missingVars.length > 0) {
-    console.error(`Missing required environment variables: ${missingVars.join(', ')}`);
+    console.error(`Eksik çevre değişkenleri: ${missingVars.join(', ')}`);
     process.exit(1);
   }
 
+  // Telegram kanal ID'sini doğrula
   const channelId = process.env.TELEGRAM_CHAT_ID;
   if (!channelId || !/^-?\d+$/.test(channelId)) {
-    console.error('Invalid TELEGRAM_CHAT_ID format');
+    console.error('Geçersiz TELEGRAM_CHAT_ID formatı');
     process.exit(1);
   }
 
-  // Parse cities from comma-separated list
+  // Şehirleri virgülle ayrılmış listeden diziye çevir
   const cities = process.env.CITIES ? process.env.CITIES.split(',').map(city => city.trim()) : [];
 
+  // Yapılandırma nesnesini oluştur ve döndür
   return {
     telegram: {
       botToken: process.env.TELEGRAM_BOT_TOKEN as string,
@@ -77,4 +94,5 @@ function validateEnvironment(): EnvironmentConfig {
   };
 }
 
+// Yapılandırma nesnesini oluştur ve dışa aktar
 export const config = validateEnvironment(); 
