@@ -110,7 +110,7 @@ TARGET_COUNTRY=Turkiye                        # Kaynak ülke (değiştirmeyin)
 
 # Randevu Filtreleme
 CITIES=Ankara,Istanbul                        # Takip edilecek şehirler (virgülle ayırın)
-MISSION_COUNTRY=Netherlands,France            # Randevusu takip edilecek ülke (virgülle ayırın)
+MISSION_COUNTRY=Netherlands,France            # Randevusu takip edilecek ülkeler (virgülle ayırın)
 
 # API Yapılandırması
 VISA_API_URL=https://api.schengenvisaappointments.com/api/visa-list/?format=json
@@ -175,7 +175,7 @@ pnpm start
 ### Randevu Takip Ayarları
 - `CHECK_INTERVAL`: Randevu kontrolü sıklığı (cron formatında)
 - `CITIES`: Takip edilecek şehirler (virgülle ayrılmış liste)
-- `MISSION_COUNTRY`: Randevusu takip edilecek ülke
+- `MISSION_COUNTRY`: Randevusu takip edilecek ülkeler (virgülle ayrılmış liste)
 
 ### Sistem Ayarları
 - `MAX_CACHE_SIZE`: Önbellekteki maksimum randevu sayısı
