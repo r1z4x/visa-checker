@@ -28,6 +28,10 @@ class TelegramService {
     this.startRateLimitReset();
   }
 
+  private escapeMarkdown(text: string): string {
+    return text.replace(/[_*\[\]()~`>#+=|{}.!-]/g, '\\$&');
+  }
+
   /**
    * Bot hata yakalayıcısını ayarlar
    * Bot çalışırken oluşabilecek hataları yakalar ve loglar
@@ -83,18 +87,22 @@ class TelegramService {
     const appointmentDate = appointment.appointment_date ? new Date(appointment.appointment_date) : null;
     const lastChecked = new Date(appointment.last_checked);
 
-    return [
-      '🔔 Yeni Vize Randevusu Mevcut!\n',
-      `🏢 Merkez: ${appointment.center_name}`,
-      `📅 Tarih: ${appointmentDate ? appointmentDate.toLocaleDateString('tr-TR') : 'Müsait değil'}`,
-      `🎫 Vize Tipi: ${appointment.visa_category} - ${appointment.visa_subcategory || 'Belirtilmemiş'}`,
-      `🔗 Bekleyen Kişi: ${appointment.people_looking}`,
-      `🔗 Randevu Linki: ${appointment.book_now_link}\n`,
-      `Son Kontrol: ${lastChecked.toLocaleString('tr-TR', { 
+    const formatDate = (date: Date) => {
+      return date.toLocaleString('tr-TR', {
         timeZone: 'Europe/Istanbul',
         dateStyle: 'medium',
         timeStyle: 'medium'
-      })}`
+      });
+    };
+
+    return [
+      '*🎯 YENİ VİZE RANDEVUSU BULUNDU\\!*\n',
+      `🏛️ *Konsolosluk:* ${this.escapeMarkdown(appointment.center_name)}`,
+      `📆 *Randevu Tarihi:* ${appointmentDate ? this.escapeMarkdown(appointmentDate.toLocaleDateString('tr-TR')) : '❌ Müsait değil'}`,
+      `🛂 *Vize Kategorisi:* ${this.escapeMarkdown(appointment.visa_category)}${appointment.visa_subcategory ? `\n└ 📋 *Alt Kategori:* ${this.escapeMarkdown(appointment.visa_subcategory)}` : ''}`,
+      `👥 *Bekleyen Kişi Sayısı:* ${appointment.people_looking}`,
+      `\n🔗 *Randevu Almak İçin:*\n[Randevu Sistemine Git](${this.escapeMarkdown(appointment.book_now_link)})\n`,
+      `⏰ *Son Güncelleme:* ${this.escapeMarkdown(formatDate(lastChecked))}`
     ].join('\n');
   }
 
@@ -103,20 +111,18 @@ class TelegramService {
    * @returns Mesaj başarıyla gönderildiyse true, hata oluştuysa false döner
    */
   async sendNotification(appointment: VisaAppointment): Promise<boolean> {
-    // Randevu tarihi null ise bildirim gönderme
-    if (!appointment.appointment_date) {
-      if (config.app.debug) {
-        console.log('Randevu tarihi olmadığı için bildirim gönderilmedi:', appointment.center_name);
-      }
-      return false;
-    }
-
     try {
       await this.handleRateLimit();
 
       await this.bot.telegram.sendMessage(
         config.telegram.channelId,
-        this.formatMessage(appointment)
+        this.formatMessage(appointment),
+        {
+          parse_mode: 'MarkdownV2',
+          link_preview_options: {
+            is_disabled: true
+          }
+        }
       );
 
       this.messageCount++;
@@ -160,4 +166,4 @@ class TelegramService {
   }
 }
 
-export const telegramService = new TelegramService(); 
+export const telegramService = new TelegramService();
