@@ -5,7 +5,7 @@ Bu bot, Schengen vizesi için randevu durumlarını otomatik olarak takip eder v
 ## 📋 Özellikler
 
 - 🔄 Otomatik randevu kontrolü
-- 🌍 Çoklu şehir desteği
+- 🌍 Çoklu şehir ve ülke desteği
 - 🇪🇺 Farklı Schengen ülkeleri için randevu takibi
 - 📱 Telegram üzerinden anlık bildirimler
 - ⏰ Özelleştirilebilir kontrol sıklığı
@@ -110,7 +110,7 @@ TARGET_COUNTRY=Turkiye                        # Kaynak ülke (değiştirmeyin)
 
 # Randevu Filtreleme
 CITIES=Ankara,Istanbul                        # Takip edilecek şehirler (virgülle ayırın)
-MISSION_COUNTRY=Netherlands                   # Randevusu takip edilecek ülke
+MISSION_COUNTRY=Netherlands,France            # Randevusu takip edilecek ülke (virgülle ayırın)
 
 # API Yapılandırması
 VISA_API_URL=https://api.schengenvisaappointments.com/api/visa-list/?format=json
@@ -189,16 +189,18 @@ pnpm start
 Bot, yeni bir randevu bulduğunda şu formatta bir mesaj gönderir:
 
 ```
-🔔 Yeni Randevu Bildirimi
+🎯 YENİ VİZE RANDEVUSU BULUNDU!
 
-📍 Merkez: Netherlands Visa Application Centre - Ankara
-🗓 Tarih: 24 Aralık 2024
-🎫 Kategori: KISA DONEM VIZE / SHORT TERM VISA
-📋 Alt Kategori: TURIZM VIZE BASVURUSU / TOURISM VISA APPLICATION
-👥 Bekleyen Kişi: 5
+🏛️ Konsolosluk: France Visa Application Centre - Ankara
+📆 Randevu Tarihi: 05.12.2024
+🛂 Vize Kategorisi: Short Term / Kisa Donem / Court Sejour
+└ 📋 Alt Kategori: Professional
+👥 Bekleyen Kişi Sayısı: 1
 
-🔗 Randevu Linki:
-https://visa.vfsglobal.com/tur/en/nld/login
+🔗 Randevu Almak İçin:
+[Randevu Sistemine Git](https://visa.vfsglobal.com/tur/en/fra/login)
+
+⏰ Son Güncelleme: 30 Kas 2024 08:55:31
 ```
 
 ## 🤔 Sık Sorulan Sorular
