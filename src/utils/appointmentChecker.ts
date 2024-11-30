@@ -47,8 +47,10 @@ function isAppointmentValid(appointment: VisaAppointment): boolean {
   // Sadece hedef ülke için olan randevuları kontrol et
   if (appointment.source_country !== config.app.targetCountry) return false;
 
-  // Sadece hedef misyon ülkesi için olan randevuları kontrol et
-  if (appointment.mission_country !== config.app.missionCountry) return false;
+  // Sadece hedef misyon ülkeleri için olan randevuları kontrol et
+  if (!config.app.missionCountries.some(country => 
+    country.toLowerCase() === appointment.mission_country.toLowerCase()
+  )) return false;
 
   // Eğer hedef şehirler belirtilmişse, sadece o şehirlerdeki randevuları kontrol et
   if (config.app.targetCities.length > 0) {

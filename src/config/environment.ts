@@ -18,7 +18,7 @@ export interface EnvironmentConfig {
     checkInterval: string;    // Kontrol sıklığı (cron formatında)
     targetCountry: string;    // Kaynak ülke (Turkiye)
     targetCities: string[];   // Takip edilecek şehirler listesi
-    missionCountry: string;   // Hedef ülke (Netherlands, France vb.)
+    missionCountries: string[];   // Hedef ülkeler listesi
     debug: boolean;           // Hata ayıklama modu
   };
   // API ile ilgili yapılandırmalar
@@ -67,6 +67,11 @@ function validateEnvironment(): EnvironmentConfig {
   // Şehirleri virgülle ayrılmış listeden diziye çevir
   const cities = process.env.CITIES ? process.env.CITIES.split(',').map(city => city.trim()) : [];
 
+  // Hedef ülkeleri virgülle ayrılmış listeden diziye çevir
+  const missionCountries = process.env.MISSION_COUNTRY 
+    ? process.env.MISSION_COUNTRY.split(',').map(country => country.trim()) 
+    : ['Netherlands'];
+
   // Yapılandırma nesnesini oluştur ve döndür
   return {
     telegram: {
@@ -79,7 +84,7 @@ function validateEnvironment(): EnvironmentConfig {
       checkInterval: process.env.CHECK_INTERVAL || '*/5 * * * *',
       targetCountry: process.env.TARGET_COUNTRY || 'Turkiye',
       targetCities: cities,
-      missionCountry: process.env.MISSION_COUNTRY || 'Netherlands',
+      missionCountries,
       debug: process.env.DEBUG === 'true',
     },
     api: {
