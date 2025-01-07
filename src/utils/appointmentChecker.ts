@@ -61,6 +61,14 @@ function isAppointmentValid(appointment: VisaAppointment): boolean {
     if (!cityMatch) return false;
   }
 
+  // Belirtilmişse alt kategorileri kontrol et
+  if (config.app.targetSubCategories.length > 0) {
+    const subCategoryMatch = config.app.targetSubCategories.some(subCategory =>
+      appointment.visa_subcategory.toLowerCase().includes(subCategory.toLowerCase())
+    );
+    if (!subCategoryMatch) return false;
+  }
+
   return true;
 }
 
