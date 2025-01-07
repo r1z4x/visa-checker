@@ -19,6 +19,7 @@ export interface EnvironmentConfig {
     targetCountry: string;    // Kaynak ülke (Turkiye)
     targetCities: string[];   // Takip edilecek şehirler listesi
     missionCountries: string[];   // Hedef ülkeler listesi
+    targetSubCategories: string[];   // Takip edilecek subkategoriler listesi
     debug: boolean;           // Hata ayıklama modu
   };
   // API ile ilgili yapılandırmalar
@@ -72,6 +73,11 @@ function validateEnvironment(): EnvironmentConfig {
     ? process.env.MISSION_COUNTRY.split(',').map(country => country.trim()) 
     : ['Netherlands'];
 
+  // Parse subcategories from env
+  const subCategories = process.env.VISA_SUBCATEGORIES 
+    ? process.env.VISA_SUBCATEGORIES.split(',').map(cat => cat.trim()) 
+    : [];
+
   // Yapılandırma nesnesini oluştur ve döndür
   return {
     telegram: {
@@ -85,6 +91,7 @@ function validateEnvironment(): EnvironmentConfig {
       targetCountry: process.env.TARGET_COUNTRY || 'Turkiye',
       targetCities: cities,
       missionCountries,
+      targetSubCategories: subCategories,
       debug: process.env.DEBUG === 'true',
     },
     api: {
