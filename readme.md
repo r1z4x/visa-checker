@@ -11,25 +11,30 @@ Bu bot, Schengen vizesi için randevu durumlarını otomatik olarak takip eder v
 - ⏰ Özelleştirilebilir kontrol sıklığı
 - 🚫 Rate limit koruması
 - 🔍 Detaylı hata ayıklama modu
+- 🏷️ Vize alt kategorilerine göre filtreleme (Tourism, Business, Student vb.)
 
 ## 🛠 Sistem Gereksinimleri
 
 ### Yazılım Gereksinimleri
+
 - Node.js (v16 veya üzeri)
 - Paket yöneticisi (npm, yarn veya pnpm)
 - Telegram Bot Token'ı
 - Telegram Kanal/Grup ID'si
 
 ### Donanım/Hosting Gereksinimleri
+
 Bot'un sürekli çalışabilmesi için aşağıdaki seçeneklerden birine ihtiyacınız var:
 
 1. **VPS (Virtual Private Server) - Önerilen 🌟**
+
    - 7/24 kesintisiz çalışma
    - Düşük maliyetli (aylık 50-100 lira)
    - Önerilen sağlayıcılar (dolar bazlı): DigitalOcean, Linode, Vultr, OVH
    - Önerilen sağlayıcılar (türk lirası bazlı): DeHost, Natro, Turhost
 
 2. **Kişisel Bilgisayar**
+
    - 7/24 açık kalması gerekir
    - Elektrik kesintilerinden etkilenir
    - İnternet bağlantısı sürekli olmalı
@@ -73,12 +78,14 @@ Bot'un sürekli çalışabilmesi için aşağıdaki seçeneklerden birine ihtiya
 ### 3. Projeyi Kurma
 
 1. Projeyi bilgisayarınıza indirin:
+
 ```bash
 git clone https://github.com/byigitt/visa-checker.git
 cd visa-checker
 ```
 
 2. Gerekli paketleri yükleyin:
+
 ```bash
 # npm kullanıyorsanız
 npm install
@@ -91,11 +98,13 @@ pnpm install
 ```
 
 3. `.env.example` dosyasını `.env` olarak kopyalayın:
+
 ```bash
 cp .env.example .env
 ```
 
 4. `.env` dosyasını düzenleyin:
+
 ```env
 # Telegram Yapılandırması
 TELEGRAM_BOT_TOKEN=your_bot_token_here        # Telegram bot token'ınız
@@ -111,6 +120,7 @@ TARGET_COUNTRY=Turkiye                        # Kaynak ülke (değiştirmeyin)
 # Randevu Filtreleme
 CITIES=Ankara,Istanbul                        # Takip edilecek şehirler (virgülle ayırın)
 MISSION_COUNTRY=Netherlands,France            # Randevusu takip edilecek ülkeler (virgülle ayırın)
+VISA_SUBCATEGORIES=Tourism,Business           # Takip edilecek vize alt kategorileri (virgülle ayırın, boş bırakılabilir)
 
 # API Yapılandırması
 VISA_API_URL=https://api.schengenvisaappointments.com/api/visa-list/?format=json
@@ -126,6 +136,7 @@ DEBUG=false                                  # Hata ayıklama modu (true/false)
 ```
 
 5. TypeScript kodunu derleyin:
+
 ```bash
 # npm kullanıyorsanız
 npm run build
@@ -140,6 +151,7 @@ pnpm build
 ### 4. Botu Çalıştırma
 
 1. Geliştirme modunda çalıştırma:
+
 ```bash
 # npm kullanıyorsanız
 npm run dev
@@ -152,6 +164,7 @@ pnpm dev
 ```
 
 2. Production modunda çalıştırma:
+
 ```bash
 # npm kullanıyorsanız
 npm start
@@ -166,6 +179,7 @@ pnpm start
 ## ⚙️ Yapılandırma Seçenekleri
 
 ### Telegram Ayarları
+
 - `TELEGRAM_BOT_TOKEN`: Telegram bot token'ınız
 - `TELEGRAM_CHAT_ID`: Telegram kanal ID'niz
 - `TELEGRAM_RATE_LIMIT`: Dakikada gönderilebilecek maksimum mesaj sayısı
@@ -173,11 +187,19 @@ pnpm start
 - `TELEGRAM_RATE_LIMIT_MINUTES`: Bildirimler arası minimum süre
 
 ### Randevu Takip Ayarları
+
 - `CHECK_INTERVAL`: Randevu kontrolü sıklığı (cron formatında)
 - `CITIES`: Takip edilecek şehirler (virgülle ayrılmış liste)
 - `MISSION_COUNTRY`: Randevusu takip edilecek ülkeler (virgülle ayrılmış liste)
+- `VISA_SUBCATEGORIES`: Takip edilecek vize alt kategorileri
+  - Örnek değerler: Tourism, Business, Student, Family Visit
+  - Virgülle ayrılmış liste olarak yazılır
+  - Boş bırakılırsa tüm alt kategoriler takip edilir
+  - Büyük/küçük harf duyarlı değildir
+  - Kısmi eşleşme yapar (örn: "Tourism" yazarsanız "TOURISM VISA APPLICATION" olanları da yakalar)
 
 ### Sistem Ayarları
+
 - `MAX_CACHE_SIZE`: Önbellekteki maksimum randevu sayısı
 - `CACHE_CLEANUP_INTERVAL`: Önbellek temizleme sıklığı (ms)
 - `MAX_RETRIES`: API hatalarında tekrar deneme sayısı
@@ -206,20 +228,29 @@ Bot, yeni bir randevu bulduğunda şu formatta bir mesaj gönderir:
 ## 🤔 Sık Sorulan Sorular
 
 1. **Bot çalışıyor mu?**
+
    - Konsolda "Vize randevu kontrolü başlatıldı" mesajını görmelisiniz
    - Debug modunu aktif ederek daha detaylı loglar görebilirsiniz
 
 2. **Telegram bildirimleri gelmiyor**
+
    - Bot token'ınızı kontrol edin
    - Kanal ID'sini kontrol edin
    - Botun kanalda admin olduğundan emin olun
 
 3. **Belirli bir şehir/ülke için randevuları nasıl takip ederim?**
+
    - `.env` dosyasında `CITIES` ve `MISSION_COUNTRY` değerlerini düzenleyin
 
 4. **Rate limit hatası alıyorum**
+
    - `TELEGRAM_RATE_LIMIT_MINUTES` değerini artırın
    - Kontrol sıklığını azaltın
+
+5. **Sadece belirli vize türlerini nasıl takip ederim?**
+   - `.env` dosyasında `VISA_SUBCATEGORIES` değişkenini kullanın
+   - Örnek: `VISA_SUBCATEGORIES=Tourism,Business,Student`
+   - Boş bırakırsanız tüm vize türleri takip edilir
 
 ## 🚨 Hata Bildirimi
 
