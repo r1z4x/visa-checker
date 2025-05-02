@@ -2,18 +2,24 @@
  * Randevu bilgilerini içeren tip tanımı
  */
 export interface VisaAppointment {
-  source_country: string;      // Kaynak ülke (örn: Turkiye)
-  mission_country: string;     // Hedef ülke (örn: Netherlands)
-  center_name: string;         // Merkez adı
-  appointment_date: string;    // Randevu tarihi
-  visa_type_id: number;       // Vize tipi ID'si
-  visa_category: string;      // Vize kategorisi
-  visa_subcategory: string;   // Vize alt kategorisi
-  people_looking: number;     // Bekleyen kişi sayısı
-  book_now_link: string;      // Randevu alma linki
-  last_checked: string;       // Son kontrol tarihi
-} 
+  id: number;
+  tracking_count: number;
+  country_code: string; // Kaynak ülke kodu (örn: tur)
+  mission_code: string; // Hedef ülke kodu (örn: nld)
+  visa_category: string; // Vize kategorisi
+  visa_type: string; // Vize tipi
+  center: string; // Merkez adı
+  status: string; // Durum (örn: open, closed, waitlist_open, waitlist_closed)
+  last_checked_at: string; // Son kontrol tarihi (ISO 8601 formatında)
+  last_open_at?: string; // Son açılma tarihi (varsa, ISO 8601 formatında)
+  last_available_date?: string; // Son müsait tarih (varsa, GG/AA/YYYY formatında)
+}
 
+/**
+ * Önbellek için tip tanımı
+ * Anahtar: Randevu ID'si
+ * Değer: Gönderildi bilgisi (boolean)
+ */
 export interface AppointmentCache {
-  [key: string]: boolean;
-} 
+  [key: string]: boolean; // key will be the appointment id (stringified)
+}
