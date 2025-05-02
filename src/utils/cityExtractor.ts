@@ -9,6 +9,7 @@
  */
 export function extractCity(centerName: string): string {
   // Tire veya virgülle ayrılmış son kelime grubunu yakala
-  const match = centerName.match(/(?:-|,\s)\s*([^-,\s][^-,]*)$/);
+  // Allows spaces in the city name
+  const match = centerName.match(/(?:-|\s*,\s*)\s*([^-,]+)$/);
   return match ? match[1].trim() : centerName;
 }
