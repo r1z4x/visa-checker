@@ -21,5 +21,5 @@ export interface VisaAppointment {
  * Değer: Gönderildi bilgisi (boolean)
  */
 export interface AppointmentCache {
-  [key: string]: boolean; // key will be the appointment id (stringified)
+  [key: string]: { timestamp: number }; // key: appointment ID, value: object with timestamp
 }

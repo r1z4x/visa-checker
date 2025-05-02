@@ -27,7 +27,7 @@ class CacheService {
    * Yeni bir randevuyu önbelleğe ekler
    */
   set(key: string): void {
-    this.cache[key] = true;
+    this.cache[key] = { timestamp: Date.now() };
   }
 
   /**
@@ -47,14 +47,20 @@ class CacheService {
       console.log(
         `Önbellek boyutu (${currentSize}) maksimumu (${config.cache.maxSize}) aştı. Temizleniyor...`
       );
-      const keysToRemove = Object.keys(this.cache).slice(
-        0,
-        currentSize - config.cache.maxSize
-      );
+
+      // Sort keys by timestamp (oldest first)
+      const sortedKeys = Object.entries(this.cache)
+        .sort(([, a], [, b]) => a.timestamp - b.timestamp)
+        .map(([key]) => key);
+
+      // Determine how many keys to remove
+      const numToRemove = currentSize - config.cache.maxSize;
+      const keysToRemove = sortedKeys.slice(0, numToRemove);
+
       for (const key of keysToRemove) {
         this.delete(key);
       }
-      console.log(`${keysToRemove.length} eski kayıt silindi.`);
+      console.log(`${keysToRemove.length} en eski kayıt silindi.`);
     }
   }
 
