@@ -72,8 +72,10 @@ function validateEnvironment(): EnvironmentConfig {
 
   // Hedef ülkeleri virgülle ayrılmış listeden diziye çevir
   const missionCountries = process.env.MISSION_COUNTRY
-    ? process.env.MISSION_COUNTRY.split(",").map((country) => country.trim())
-    : ["Netherlands"];
+    ? process.env.MISSION_COUNTRY.split(",").map((country) =>
+        country.trim().toLowerCase()
+      )
+    : ["nld"];
 
   // Parse subcategories from env
   const subCategories = process.env.VISA_SUBCATEGORIES
@@ -90,7 +92,7 @@ function validateEnvironment(): EnvironmentConfig {
     },
     app: {
       checkInterval: process.env.CHECK_INTERVAL || "*/5 * * * *",
-      targetCountry: process.env.TARGET_COUNTRY || "Turkiye",
+      targetCountry: (process.env.TARGET_COUNTRY || "tur").toLowerCase(),
       targetCities: cities,
       missionCountries,
       targetSubCategories: subCategories,
