@@ -1,5 +1,5 @@
-import type { AppointmentCache } from '../types';
-import { config } from '../config/environment';
+import type { AppointmentCache, VisaAppointment } from "../types";
+import { config } from "../config/environment";
 
 /**
  * Önbellek Servisi
@@ -12,13 +12,8 @@ class CacheService {
    * Randevu bilgilerinden benzersiz bir anahtar oluşturur
    * Bu anahtar randevunun daha önce gönderilip gönderilmediğini kontrol etmek için kullanılır
    */
-  createKey(params: { 
-    source_country: string; 
-    mission_country: string; 
-    center_name: string; 
-    appointment_date: string; 
-  }): string {
-    return `${params.source_country}-${params.mission_country}-${params.center_name}-${params.appointment_date}`;
+  createKey(appointment: VisaAppointment): string {
+    return String(appointment.id);
   }
 
   /**
@@ -44,32 +39,22 @@ class CacheService {
 
   /**
    * Önbelleği temizler:
-   * 1. Dünden önceki randevuları siler
-   * 2. Maksimum önbellek boyutunu aşan durumlarda en eski kayıtları siler
+   * Maksimum önbellek boyutunu aşan durumlarda en eski kayıtları siler
    */
   cleanup(): void {
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    
-    const cacheEntries = Object.entries(this.cache);
-    
-    // Eski kayıtları sil
-    for (const [key, _] of cacheEntries) {
-      const appointmentDate = key.split('-')[3];
-      if (new Date(appointmentDate) < yesterday) {
+    const currentSize = Object.keys(this.cache).length;
+    if (currentSize > config.cache.maxSize) {
+      console.log(
+        `Önbellek boyutu (${currentSize}) maksimumu (${config.cache.maxSize}) aştı. Temizleniyor...`
+      );
+      const keysToRemove = Object.keys(this.cache).slice(
+        0,
+        currentSize - config.cache.maxSize
+      );
+      for (const key of keysToRemove) {
         this.delete(key);
       }
-    }
-    
-    // Önbellek boyutu aşıldıysa en eski kayıtları sil
-    if (Object.keys(this.cache).length > config.cache.maxSize) {
-      const sortedKeys = Object.keys(this.cache)
-        .sort((a, b) => new Date(a.split('-')[3]).getTime() - new Date(b.split('-')[3]).getTime());
-      
-      while (Object.keys(this.cache).length > config.cache.maxSize) {
-        const oldestKey = sortedKeys.shift();
-        if (oldestKey) this.delete(oldestKey);
-      }
+      console.log(`${keysToRemove.length} eski kayıt silindi.`);
     }
   }
 
@@ -82,4 +67,4 @@ class CacheService {
   }
 }
 
-export const cacheService = new CacheService(); 
+export const cacheService = new CacheService();
