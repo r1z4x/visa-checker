@@ -92,7 +92,8 @@ function validateEnvironment(): EnvironmentConfig {
     },
     app: {
       checkInterval: process.env.CHECK_INTERVAL || "*/5 * * * *",
-      targetCountry: (process.env.TARGET_COUNTRY || "tur").toLowerCase(),
+      // The target country should be a lower-case country code (e.g., "tur", "gbr"). Defaults to "tur".
+      targetCountry: process.env.TARGET_COUNTRY?.toLowerCase() || "tur",
       targetCities: cities,
       missionCountries,
       targetSubCategories: subCategories,
