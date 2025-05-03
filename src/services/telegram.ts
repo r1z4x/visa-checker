@@ -117,12 +117,12 @@ class TelegramService {
       }[appointment.status] || "❓";
 
     return [
-      `*${statusEmoji} YENİ RANDEVU DURUMU\! *
+      `*${statusEmoji} YENİ RANDEVU DURUMU\\! *
 `,
       `🏢 *Merkez:* ${this.escapeMarkdown(appointment.center)}`,
       `🌍 *Ülke/Misyon:* ${this.escapeMarkdown(
         appointment.country_code.toUpperCase()
-      )} \-> ${this.escapeMarkdown(appointment.mission_code.toUpperCase())}`,
+      )} \-\> ${this.escapeMarkdown(appointment.mission_code.toUpperCase())}`,
       `🛂 *Kategori:* ${this.escapeMarkdown(appointment.visa_category)}`,
       `📄 *Tip:* ${this.escapeMarkdown(appointment.visa_type)}`,
       `🚦 *Durum:* ${statusEmoji} ${this.escapeMarkdown(appointment.status)}`,
