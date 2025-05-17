@@ -29,7 +29,7 @@ class TelegramService {
   }
 
   private escapeMarkdown(text: string): string {
-    return text.replace(/[_*[\\]()~`>#+=|{}.!]/g, "\\\\$&");
+    return text.replace(/[_*[\\]()~`>#+=|{}.\!]/g, "\\\\$&");
   }
 
   /**
@@ -117,7 +117,7 @@ class TelegramService {
       }[appointment.status] || "❓";
 
     return [
-      `*${statusEmoji} YENİ RANDEVU DURUMU\\\\! *
+      `*${statusEmoji} YENİ RANDEVU DURUMU\\\\ *
 `,
       `🏢 *Merkez:* ${this.escapeMarkdown(
         appointment.center.replace(/\\s*-\\s*/g, "")
