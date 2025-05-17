@@ -120,16 +120,16 @@ class TelegramService {
     const escapedCenter = this.escapeMarkdown(appointment.center);
 
     return [
-      `*${statusEmoji} YENİ RANDEVU DURUMU\\! *`,
-      `\\n🏢 *Merkez:* ${escapedCenter}`,
-      `🌍 *Ülke/Misyon:* ${this.escapeMarkdown(appointment.country_code.toUpperCase())} \\-\\> ${this.escapeMarkdown(appointment.mission_code.toUpperCase())}`,
+      `*${statusEmoji} YENİ RANDEVU DURUMU\!*`,
+      `🏢 *Merkez:* ${escapedCenter}`,
+      `🌍 *Ülke/Misyon:* ${this.escapeMarkdown(appointment.country_code.toUpperCase())} -> ${this.escapeMarkdown(appointment.mission_code.toUpperCase())}`,
       `🛂 *Kategori:* ${this.escapeMarkdown(appointment.visa_category)}`,
       `📄 *Tip:* ${this.escapeMarkdown(appointment.visa_type)}`,
       `🚦 *Durum:* ${statusEmoji} ${this.escapeMarkdown(appointment.status)}`,
       `🗓️ *Son Müsait Tarih:* ${formatAvailableDate(appointment.last_available_date)}`,
-      `\\n📊 *Takip Sayısı:* ${appointment.tracking_count}`,
-      `\\n⏰ *Son Kontrol:* ${this.escapeMarkdown(formatDate(lastChecked))}`,
-    ].join("\\n");
+      `📊 *Takip Sayısı:* ${appointment.tracking_count}`,
+      `⏰ *Son Kontrol:* ${this.escapeMarkdown(formatDate(lastChecked))}`,
+    ].join("\n");
   }
 
   /**
