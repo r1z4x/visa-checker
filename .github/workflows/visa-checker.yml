@@ -1,0 +1,35 @@
+name: Visa Checker
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'  # Her 15 dakikada bir çalışır
+  workflow_dispatch:        # Manuel tetikleme seçeneği
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Kodu Klonla
+        uses: actions/checkout@v3
+
+      - name: Node.js Kurulumu
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Bağımlılıkları Yükle
+        run: npm install
+
+      - name: Ortam Değişkenlerini Ayarla
+        run: |
+          echo "TELEGRAM_BOT_TOKEN=${{ secrets.TELEGRAM_BOT_TOKEN }}" >> $GITHUB_ENV
+          echo "TELEGRAM_CHAT_ID=${{ secrets.TELEGRAM_CHAT_ID }}" >> $GITHUB_ENV
+          echo "country_code=DE" >> $GITHUB_ENV
+          echo "mission_code=IST" >> $GITHUB_ENV
+          echo "center=Istanbul" >> $GITHUB_ENV
+          echo "visa_type=Schengen" >> $GITHUB_ENV
+          echo "DEBUG=false" >> $GITHUB_ENV
+
+      - name: Botu Çalıştır
+        run: npm run dev
