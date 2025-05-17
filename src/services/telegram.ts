@@ -29,7 +29,7 @@ class TelegramService {
   }
 
   private escapeMarkdown(text: string): string {
-    return text.replace(/[_*[\]()~`>#+=|{}.!-]/g, "\\$&");
+    return text.replace(/[_*[\]()~`>#+=|{}.!-]/g, "\\$");
   }
 
   /**
@@ -120,7 +120,7 @@ class TelegramService {
     const escapedCenter = this.escapeMarkdown(appointment.center);
 
     return [
-      `*${statusEmoji} YENİ RANDEVU DURUMU\!*`,
+      `*${statusEmoji} YENİ RANDEVU DURUMU!*`,
       `🏢 *Merkez:* ${escapedCenter}`,
       `🌍 *Ülke/Misyon:* ${this.escapeMarkdown(appointment.country_code.toUpperCase())} -> ${this.escapeMarkdown(appointment.mission_code.toUpperCase())}`,
       `🛂 *Kategori:* ${this.escapeMarkdown(appointment.visa_category)}`,
